@@ -3,6 +3,7 @@ package com.s0lder.droplets;
 import static com.s0lder.droplets.Messages._;
 import com.s0lder.droplets.command.CommandManager;
 import com.s0lder.droplets.util.Loader;
+import com.s0lder.droplets.util.Stdout;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -22,7 +23,7 @@ public class DropletsPlugin extends JavaPlugin {
     public static Loader loader;
     public static DropletsPlugin instance;
     
-    private CommandManager commandManager;
+    private DropletManager dropletManager;
     
     @Override
     public void onEnable() {
@@ -32,15 +33,20 @@ public class DropletsPlugin extends JavaPlugin {
         getDataFolder().mkdirs();
         setupConfiguration();
         Messages.initialize(PluginConfiguration.locale.getString());
-        log.info(_("localeSet", PluginConfiguration.locale.getString()));
-        commandManager = new CommandManager(this);
-        getServer().getPluginManager().registerEvents(commandManager, this);
-        log.info(_("enabled", getDescription().getFullName()));
+        Stdout.info(_("localeSet", PluginConfiguration.locale.getString()));
+        this.dropletManager = new DropletManager(this);
+        Class<Droplet> test = loader.getDroplet(new File(getDataFolder(), "droplets").getPath(), "TestDroplet");
+        this.dropletManager.addDroplet(test);
+        Stdout.info(_("enabled", getDescription().getFullName()));
     }
 
     @Override
     public void onDisable() {
         
+    }
+    
+    public DropletManager getDropletManager() {
+        return this.dropletManager;
     }
     
     public ClassLoader getPluginClassLoader() {

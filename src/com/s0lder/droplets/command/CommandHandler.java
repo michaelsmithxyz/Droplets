@@ -1,14 +1,15 @@
 package com.s0lder.droplets.command;
 
+import com.s0lder.droplets.Droplet;
 import java.lang.reflect.Method;
 
-public class CommandHandler<T extends Object> {
-    private String command;
-    private String[] aliases;
-    private String[] description;
-    private String[] help;
+public class CommandHandler {
+    private final String command;
+    private final String[] aliases;
+    private final String[] description;
+    private final String[] help;
     private Method handler;
-    private T instance;
+    private Droplet instance;
     
     public CommandHandler(String command, String[] aliases, String[] description, String[] help) {
         this.command = command;
@@ -19,7 +20,7 @@ public class CommandHandler<T extends Object> {
         this.instance = null;
     }
     
-    public void setHandler(T instance, Method handler) {
+    public void setHandler(Droplet instance, Method handler) {
         this.instance = instance;
         this.handler = handler;
     }
@@ -28,7 +29,7 @@ public class CommandHandler<T extends Object> {
         return this.handler;
     }
     
-    public T getInstance() {
+    public Droplet getInstance() {
         return this.instance;
     }
     

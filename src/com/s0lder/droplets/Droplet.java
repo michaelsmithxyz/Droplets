@@ -5,9 +5,9 @@ import org.bukkit.Server;
 
 public abstract class Droplet {
 
-    public abstract void onEnable();
+    public void onEnable() {};
     
-    public abstract void onDisable();
+    public void onDisable() {};
     
     protected DropletsPlugin getPlugin() {
         return DropletsPlugin.instance;
@@ -15,6 +15,10 @@ public abstract class Droplet {
     
     protected Server getServer() {
         return DropletsPlugin.instance.getServer();
+    }
+    
+    protected DropletManager getDropletManager() {
+        return DropletsPlugin.instance.getDropletManager();
     }
 
 }
