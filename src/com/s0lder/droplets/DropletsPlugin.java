@@ -1,6 +1,7 @@
 package com.s0lder.droplets;
 
 import static com.s0lder.droplets.Messages._;
+import com.s0lder.droplets.command.CommandManager;
 import com.s0lder.droplets.util.Loader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,7 +9,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -22,6 +22,8 @@ public class DropletsPlugin extends JavaPlugin {
     public static Loader loader;
     public static DropletsPlugin instance;
     
+    private CommandManager commandManager;
+    
     @Override
     public void onEnable() {
         log = getLogger();
@@ -31,6 +33,8 @@ public class DropletsPlugin extends JavaPlugin {
         setupConfiguration();
         Messages.initialize(PluginConfiguration.locale.getString());
         log.info(_("localeSet", PluginConfiguration.locale.getString()));
+        commandManager = new CommandManager(this);
+        getServer().getPluginManager().registerEvents(commandManager, this);
         log.info(_("enabled", getDescription().getFullName()));
     }
 

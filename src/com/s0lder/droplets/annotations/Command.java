@@ -4,7 +4,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CommandHandler {
+public @interface Command {
     String name();
     String[] aliases() default {};
     String[] description() default {};
