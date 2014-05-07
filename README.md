@@ -1,7 +1,7 @@
 # Droplets
 
-Droplets provides easy to write Bukkit microplugins. Each single class droplet can access Bukkit's powerful
-API, and their simplicity allows for easy development and debugging. Droplets are perfect for those
+Droplets provides an easy way to write Bukkit microplugins. Each droplet is a single class and can access
+Bukkit's powerful API. Their simplicity allows for easy development and debugging. Droplets are perfect for those
 tiny features that don't need their own plugins.
 
 More to come.
