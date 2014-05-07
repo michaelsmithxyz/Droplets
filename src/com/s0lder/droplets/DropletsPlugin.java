@@ -24,8 +24,8 @@ public class DropletsPlugin extends JavaPlugin {
     
     @Override
     public void onEnable() {
-        loader = new Loader(this);
-        instance = this;
+        this.loader = new Loader(this);
+        DropletsPlugin.instance = this;
         getDataFolder().mkdirs();
         setupConfiguration();
         Messages.initialize(PluginConfiguration.locale.getString());
@@ -37,7 +37,7 @@ public class DropletsPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        
+        this.dropletManager.disable();
     }
     
     public DropletManager getDropletManager() {
@@ -62,8 +62,8 @@ public class DropletsPlugin extends JavaPlugin {
     
     private void setupConfiguration() {
         try {
-            config_file = new File(getDataFolder(), "config.yml");
-            yaml_configuration = new YamlConfiguration();
+            this.config_file = new File(getDataFolder(), "config.yml");
+            this.yaml_configuration = new YamlConfiguration();
             yaml_configuration.load(config_file);
             PluginConfiguration.load(yaml_configuration);
         } catch(FileNotFoundException e) {

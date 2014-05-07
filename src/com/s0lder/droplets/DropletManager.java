@@ -30,7 +30,11 @@ public class DropletManager {
         }
         loadDirectory(new File(plugin.getDataFolder(), PluginConfiguration.droplet_directory.getString()), enabled);
         this.commandManager.enable();
-    }  
+    }
+    
+    public void disable() {
+        removeAll();
+    }
     
     public CommandManager getCommandManager() {
         return this.commandManager;
