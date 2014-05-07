@@ -6,7 +6,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public enum PluginConfiguration {
     
     debugging("debugging", false),
-    locale("locale", "en_US");
+    locale("locale", "en_US"),
+    droplet_directory("droplet_directory", "droplets");
     
     private String path;
     private Object value;

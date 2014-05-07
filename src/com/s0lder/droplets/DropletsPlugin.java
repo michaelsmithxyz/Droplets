@@ -1,7 +1,6 @@
 package com.s0lder.droplets;
 
 import static com.s0lder.droplets.Messages._;
-import com.s0lder.droplets.command.CommandManager;
 import com.s0lder.droplets.util.Loader;
 import com.s0lder.droplets.util.Stdout;
 import java.io.File;
@@ -10,24 +9,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.logging.Logger;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
 public class DropletsPlugin extends JavaPlugin {
-    public static Logger log;
-    public static File config_file;
-    public static YamlConfiguration yaml_configuration;
-    public static Loader loader;
     public static DropletsPlugin instance;
     
+    private File config_file;
+    private YamlConfiguration yaml_configuration;
+    private Loader loader;
     private DropletManager dropletManager;
     
     @Override
     public void onEnable() {
-        log = getLogger();
         loader = new Loader(this);
         instance = this;
         getDataFolder().mkdirs();
@@ -35,8 +31,7 @@ public class DropletsPlugin extends JavaPlugin {
         Messages.initialize(PluginConfiguration.locale.getString());
         Stdout.info(_("localeSet", PluginConfiguration.locale.getString()));
         this.dropletManager = new DropletManager(this);
-        Class<Droplet> test = loader.getDroplet(new File(getDataFolder(), "droplets").getPath(), "TestDroplet");
-        this.dropletManager.addDroplet(test);
+        this.dropletManager.enable();
         Stdout.info(_("enabled", getDescription().getFullName()));
     }
 
@@ -51,6 +46,18 @@ public class DropletsPlugin extends JavaPlugin {
     
     public ClassLoader getPluginClassLoader() {
         return this.getClassLoader();
+    }
+    
+    public File getConfigFile() {
+        return this.config_file;
+    }
+    
+    public YamlConfiguration getYAMLConfiguration() {
+        return this.yaml_configuration;
+    }
+    
+    public Loader getDropletLoader() {
+        return this.loader;
     }
     
     private void setupConfiguration() {
@@ -68,15 +75,15 @@ public class DropletsPlugin extends JavaPlugin {
                 while((next = configStream.read()) != -1) {
                     out.write(next);
                 }
-                log.info("Generated default configuration file");
+                Stdout.info("Generated default configuration file");
                 setupConfiguration();
             } catch(IOException ex){
-                log.severe("Failed to generate default configuration file!");
+                Stdout.error("Failed to generate default configuration file!");
             }
         } catch(IOException e) {
-            log.severe("Could not read configuration file!");
+            Stdout.error("Could not read configuration file!");
         } catch(InvalidConfigurationException e) {
-            log.severe("Malformed configuration file!");
+            Stdout.error("Malformed configuration file!");
         }
     }
 

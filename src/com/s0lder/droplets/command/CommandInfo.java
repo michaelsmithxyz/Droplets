@@ -31,6 +31,7 @@ public class CommandInfo {
     public static CommandInfo parseCommand(String command, Player sender) {
         String name;
         List<String> args = new ArrayList<String>();
+        String[] argsArray = new String[] {};
         String[] parts = command.split(" ");
         if(parts.length < 1) {
             throw new MalformedCommandException("Failed to parse command: '" + command + "'");
@@ -41,7 +42,8 @@ public class CommandInfo {
                 args.add(parts[i]);
             }
         }
-        return new CommandInfo(name, (String[]) args.toArray(), sender);
+        args.toArray(argsArray);
+        return new CommandInfo(name, argsArray, sender);
     }
     
 }

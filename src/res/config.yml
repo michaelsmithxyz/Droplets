@@ -1,2 +1,6 @@
 debugging: false
 locale: en_US
+droplet_directory: droplets
+enabled:
+  - TestDroplet1
+  - TestDroplet2

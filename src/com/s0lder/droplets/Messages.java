@@ -37,11 +37,8 @@ public class Messages {
         mapping = new HashMap<String, MessageFormat>();
         try {
             messageProperties.load(in);
-        } catch( IOException e) {
-            DropletsPlugin.log.warning("The selected locale mapping could not be loaded!");
-            return;
-        } catch(NullPointerException e) {
-            DropletsPlugin.log.warning("The selected locale mapping could not be loaded!");
+        } catch(Exception e) {
+            DropletsPlugin.instance.getLogger().warning("The selected locale mapping could not be loaded!");
             return;
         }
         en = messageProperties.propertyNames();

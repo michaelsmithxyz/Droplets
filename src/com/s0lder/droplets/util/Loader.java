@@ -29,8 +29,7 @@ public class Loader {
         }    
     }
     
-    public Class<Droplet> getDroplet(String pack, String name) {
-        addPackage(pack);
+    public Class<Droplet> getDroplet(String name) {
         try {
             Class<Droplet> module_class = (Class<Droplet>) Class.forName(name);
             return module_class;

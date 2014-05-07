@@ -4,6 +4,7 @@ import com.s0lder.droplets.Droplet;
 import com.s0lder.droplets.DropletsPlugin;
 import static com.s0lder.droplets.Messages._;
 import com.s0lder.droplets.annotations.Command;
+import com.s0lder.droplets.util.Stdout;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,8 +25,12 @@ public class CommandManager implements Listener {
         this.handlers = new HashMap<Droplet,List<CommandHandler>>();
     }
     
+    public void enable() {
+        this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
+    
     public void registerCommands(Droplet droplet) {
-        plugin.getLogger().info("Registering commands for: " + droplet.toString());
+        Stdout.debug(_("debugCommandsRegister", droplet.getName()));
         Method[] methods = droplet.getClass().getDeclaredMethods();
         for(Method method : methods) {
             if(method.isAnnotationPresent(Command.class)) {
@@ -36,15 +41,16 @@ public class CommandManager implements Listener {
                 }
                 Command cmd = method.getAnnotation(Command.class);
                 String name = cmd.name();
-                plugin.getLogger().info("Got command: " + name);
+                Stdout.debug(_("debugCommandFound", name));
                 CommandHandler handler = new CommandHandler(name, cmd.aliases(),
                         cmd.description(), cmd.help());
                 Class[] parameters = method.getParameterTypes();
                 if(parameters.length != 1) {
-                    plugin.log.warning(_("mismatchedArguments", name));
+                    Stdout.error(_("errorMismatchedArguments", name));
                     continue;
                 }
                 handler.setHandler(droplet, method);
+                dropHandlers.add(handler);
             }
         }
     }
@@ -55,7 +61,6 @@ public class CommandManager implements Listener {
     
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        plugin.getLogger().info("Preprocessing: " + event.getMessage());
         Player sender = event.getPlayer();
         String message = event.getMessage();
         CommandInfo info = CommandInfo.parseCommand(message, sender);
@@ -67,7 +72,7 @@ public class CommandManager implements Listener {
                     try {
                         method.invoke(instance, info);
                     } catch (Exception ex) {
-                        DropletsPlugin.log.severe(_("failedCommand", ex.getLocalizedMessage()));
+                        Stdout.error(_("errorFailedCommand", ex.getLocalizedMessage()));
                     }
                     event.setCancelled(true);
                 }

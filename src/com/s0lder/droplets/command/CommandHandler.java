@@ -1,6 +1,7 @@
 package com.s0lder.droplets.command;
 
 import com.s0lder.droplets.Droplet;
+import com.s0lder.droplets.util.Stdout;
 import java.lang.reflect.Method;
 
 public class CommandHandler {

@@ -9,6 +9,8 @@ public abstract class Droplet {
     
     public void onDisable() {};
     
+    public abstract String getName();
+    
     protected DropletsPlugin getPlugin() {
         return DropletsPlugin.instance;
     }
